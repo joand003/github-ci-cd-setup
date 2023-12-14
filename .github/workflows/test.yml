@@ -1,0 +1,46 @@
+name: Release Workflow
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build and Test
+        run: |
+        echo "Build and Test Steps Go Here"
+
+create-release:
+  needs: build-and-test
+  runs-on: ubuntu-lastest
+  steps: 
+    - uses: actions/checkout@v2
+    - name: Create Release
+      id: create_release
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN}}
+      with: 
+        tag_name: ${{ github.ref }}
+        release_name: Release ${{ github.ref }}
+        draft: false
+        prerelease: false
+
+notify: 
+  needs: create-release
+  runs-on: ubuntu-latest
+  steps:
+    - name: Send Email Notification
+      uses: dawidd6/actions-send-mail@v3
+      with: 
+        server_address: smtp.example.com
+        server_port: 465
+        username: ${{ secrets.EMAIL_USERNAME }}
+        password: ${{ secrets.EMAIL_PASSWORD }}
+        subject: New Release Created
+        to: user@example.com
+        from: CI/CD <noreply@example.com>
+        body: A new release has been created.
