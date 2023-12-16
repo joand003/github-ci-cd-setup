@@ -9,38 +9,63 @@ jobs:
   build-and-test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - name: Build and Test
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.11
+      - name: Install Poetry
         run: |
-        echo "Build and Test Steps Go Here"
+          curl -sSL https://install.python-poetry.org | python -
+      - name: Configure Poetry
+        run: |
+          poetry config virtualenvs.create false
+      - name: Install Dependencies
+        run: |
+          poetry install
+      - name: Security check with bandit
+        run: |
+          poetry run bandit -r .
+      - name: Lint with flake8
+        run: |
+          poetry run flake8
+      - name: Check formatting with black
+        run: |
+          poetry run black --check .
+      - name: Test with pytest and coverage
+        run: |
+          poetry run coverage run -m pytest
+          poetry run coverage report
+          poetry run coverage xml
 
-create-release:
-  needs: build-and-test
-  runs-on: ubuntu-lastest
-  steps: 
-    - uses: actions/checkout@v2
-    - name: Create Release
-      id: create_release
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN}}
-      with: 
-        tag_name: ${{ github.ref }}
-        release_name: Release ${{ github.ref }}
-        draft: false
-        prerelease: false
+  create-release:
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    steps: 
+      - uses: actions/checkout@v4
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN}}
+        with: 
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          draft: false
+          prerelease: false
 
-notify: 
-  needs: create-release
-  runs-on: ubuntu-latest
-  steps:
-    - name: Send Email Notification
-      uses: dawidd6/actions-send-mail@v3
-      with: 
-        server_address: smtp.example.com
-        server_port: 465
-        username: ${{ secrets.EMAIL_USERNAME }}
-        password: ${{ secrets.EMAIL_PASSWORD }}
-        subject: New Release Created
-        to: user@example.com
-        from: CI/CD <noreply@example.com>
-        body: A new release has been created.
+  notify: 
+    needs: create-release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send Email Notification
+        uses: dawidd6/actions-send-mail@v3
+        with: 
+          server_address: smtp.gmail.com
+          server_port: 465
+          username: ${{ secrets.EMAIL_USERNAME }}
+          password: ${{ secrets.EMAIL_PASSWORD }}
+          subject: New Release Created
+          to: joshua.andersland@gmail.com
+          from: CI/CD <josh.andersland@gmail.com>
+          body: A new release has been created.
