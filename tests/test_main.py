@@ -1,30 +1,30 @@
-import my_project.main as sorts
+from my_project.main import bubbleSort, selectionSort, mergeSort, insertionSort
 
-listOne = [1, 2, 3, 4, 5]
-listTwo = [5, 4, 3, 2, 1]
-listThree = [1, 3, 2, 5, 4]
-sortedList = [1, 2, 3, 4, 5]
+preSortedList = [1, 2, 3, 4, 5]
+reversedList = [5, 4, 3, 2, 1]
+jumbledList = [1, 3, 2, 5, 4]
+correctSortedOrder = [1, 2, 3, 4, 5]
 
 
 def test_bubble_sort():
-    assert sorts.bubbleSort(listOne) == sortedList
-    assert sorts.bubbleSort(listTwo) == sortedList
-    assert sorts.bubbleSort(listThree) == sortedList
+    assert bubbleSort(preSortedList) == correctSortedOrder
+    assert bubbleSort(reversedList) == correctSortedOrder
+    assert bubbleSort(jumbledList) == correctSortedOrder
 
 
 def test_selection_sort():
-    assert sorts.selectionSort(listOne) == sortedList
-    assert sorts.selectionSort(listTwo) == sortedList
-    assert sorts.selectionSort(listThree) == sortedList
+    assert selectionSort(preSortedList) == correctSortedOrder
+    assert selectionSort(reversedList) == correctSortedOrder
+    assert selectionSort(jumbledList) == correctSortedOrder
 
 
 def test_merge_sort():
-    assert sorts.mergeSort(listOne) == sortedList
-    assert sorts.mergeSort(listTwo) == sortedList
-    assert sorts.mergeSort(listThree) == sortedList
+    assert mergeSort(preSortedList) == correctSortedOrder
+    assert mergeSort(reversedList) == correctSortedOrder
+    assert mergeSort(jumbledList) == correctSortedOrder
 
 
 def test_insertion_sort():
-    assert sorts.insertionSort(listOne) == sortedList
-    assert sorts.insertionSort(listTwo) == sortedList
-    assert sorts.insertionSort(listThree) == sortedList
+    assert insertionSort(preSortedList) == correctSortedOrder
+    assert insertionSort(reversedList) == correctSortedOrder
+    assert insertionSort(jumbledList) == correctSortedOrder

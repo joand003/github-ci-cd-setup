@@ -1,0 +1,39 @@
+name: Dev Stage Workflow
+
+on:
+  push:
+    branches:
+      - test-branch
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.11
+      - name: Install Poetry
+        run: |
+          curl -sSL https://install.python-poetry.org | python -
+      - name: Configure Poetry
+        run: |
+          poetry config virtualenvs.create false
+      - name: Install Dependencies
+        run: |
+          poetry install
+      - name: Security check with bandit
+        run: |
+          poetry run bandit -c pyproject.toml -r .
+      - name: Lint with Ruff
+        run: |
+          poetry run ruff check
+      - name: Check formatting with black
+        run: |
+          poetry run black --check .
+      - name: Test with pytest and coverage
+        run: |
+          poetry run coverage run -m pytest
+          poetry run coverage report
+          poetry run coverage xml
