@@ -28,7 +28,7 @@ jobs:
           poetry run bandit -c pyproject.toml -r .
       - name: Lint with Ruff
         run: |
-          poetry run ruff
+          poetry run ruff check
       - name: Check formatting with black
         run: |
           poetry run black --check .
