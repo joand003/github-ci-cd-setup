@@ -36,7 +36,8 @@ class Rectangle(Shape):
 
 class Triangle(Shape):
     def __init__(self, base, height, side_a, side_b, side_c):
-        if base <= 0 or height <= 0 or side_a <= 0 or side_b <= 0 or side_c <= 0:
+        if (base <= 0 or height <= 0 or side_a <= 0 or
+                side_b <= 0 or side_c <= 0):
             raise ValueError("All measurements must be positive")
         super().__init__("Triangle", 3)
         self.base = base

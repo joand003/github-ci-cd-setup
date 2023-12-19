@@ -1,12 +1,12 @@
 # Github CI/CD Setup
 This project is to setup a CI/CD for a python project. 
 
-## Prerequisites
+## Prerequisites (outside things)
 Install Python 3.11
 Poetry
 You will also need to have github actions setup in your github account. 
 
-## Installation
+## Installation (only outside)
 To install github CI/CD stetup, follow these steps:
 
 open bash/terminal
@@ -23,10 +23,3 @@ Create a branch: 'git checkout -b <branch_name>
 Make your changes and commit them: 'git commit -m '<commit_message>'
 Push to the original branch: 'git push origin <project_name>/<location>'
 Create the pull request
-
-
-## Contact
-Any questions feel free to reach out to me via email at joshua.andersland@gmail.com
-
-## License
-Free use, no restrictions. 
